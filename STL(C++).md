@@ -118,65 +118,64 @@
 
 - array 容器模板类中的 `begin()/end() 和 cbegin()/cend()` 成员函数返回的都是正向迭代器，它们分别指向「首元素」和「尾元素+1」 的位置。在实际使用时，我们可以利用它们实现初始化容器或者遍历容器中元素的操作。
 
-```c++
-#include <iostream>
-#include <array>
-using namespace std;
-int main()
-{
-    array<int, 5>values;
-    int h = 1;
-    auto first = values.begin();
-    auto last = values.end();
-    //初始化 values 容器为{1,2,3,4,5}
-    while (first != last)
-    {
-        *first = h;
-        ++first;
-        h++;
-    }
-  
-    first = values.begin();
-    while (first != last)
-    {
-        cout << *first << " ";
-        ++first;
-    }
-    return 0; 
-}
-```
+  ```c++
+  #include <iostream>
+  #include <array>
+  using namespace std;
+  int main()
+  {
+      array<int, 5>values;
+      int h = 1;
+      auto first = values.begin();
+      auto last = values.end();
+      //初始化 values 容器为{1,2,3,4,5}
+      while (first != last)
+      {
+          *first = h;
+          ++first;
+          h++;
+      }
+    
+      first = values.begin();
+      while (first != last)
+      {
+          cout << *first << " ";
+          ++first;
+      }
+      return 0; 
+  }
 
 - array 模板类中还提供了` rbegin()/rend() 和 crbegin()/crend() `成员函数，它们每对都可以分别得到指向最一个元素和第一个元素前一个位置的随机访问迭代器，又称它们为反向迭代器。(**需要注意的是，在使用反向迭代器进行 ++ 或 -- 运算时，++ 指的是迭代器向左移动一位，-- 指的是迭代器向右移动一位，即这两个运算符的功能也“互换”了**)
 
-<img src="STL(C++).assets/image-20221010162606475.png" alt="image-20221010162606475" style="zoom: 50%;" />
+  <img src="STL(C++).assets/image-20221010162606475.png" alt="image-20221010162606475" style="zoom: 50%;" />
 
-```c++
-#include <iostream>
-#include <array>
-using namespace std;
-int main()
-{
-    array<int, 5>values;
-    int h = 1;
-    auto first = values.rbegin();
-    auto last = values.rend(); 
-    //初始化 values 容器为 {5,4,3,2,1}
-    while (first != last)
-    {
-        *first = h;
-        ++first;
-        h++;
-    }
-    //重新遍历容器，并输入各个元素
-    first = values.rbegin();
-    while (first != last)
-    {
-        cout << *first << " ";
-        ++first;
-    }
-    return 0;
-}
-```
+  ```c++
+  #include <iostream>
+  #include <array>
+  using namespace std;
+  int main()
+  {
+      array<int, 5>values;
+      int h = 1;
+      auto first = values.rbegin();
+      auto last = values.rend(); 
+      //初始化 values 容器为 {5,4,3,2,1}
+      while (first != last)
+      {
+          *first = h;
+          ++first;
+          h++;
+      }
+      //重新遍历容器，并输入各个元素
+      first = values.rbegin();
+      while (first != last)
+      {
+          cout << *first << " ";
+          ++first;
+      }
+      return 0;
+  }
+  ```
 
 ### vector
 
@@ -211,13 +210,13 @@ vector相关函数：
 
   2、`arr.emplace_back()`可以再vector的末尾中添加数据。二者的区别，就在于底层实现的机制不同。push_back() 向容器尾部添加元素时，首先会创建这个元素，然后再将这个元素拷贝或者移动到容器中（如果是拷贝的话，事后会自行销毁先前创建的这个元素）；而 emplace_back() 在实现时，则是直接在容器尾部创建这个元素，省去了拷贝或移动元素的过程。
 
-  2、`iterator arr.insert(iterator pos, elem) ` 在迭代器指向的位置pos**之前**处插入一个元素elem,返回表示新插入元素位置的迭代器。
+  2、`iterator arr.insert(const_iterator pos, elem) ` 在迭代器指向的位置pos**之前**处插入一个元素elem,返回表示新插入元素位置的迭代器。
 
-  3、`iterator arr.insert(iterator pos,int count,int elem)` pos**之前**插入count个元素elem,返回表示新插入元素位置的迭代器。
+  3、`iterator arr.insert(const_iterator pos,int count,int elem)` pos**之前**插入count个元素elem,返回表示新插入元素位置的迭代器。
 
-  4、`iterator arr.insert(iterator pos,first,last)`在迭代器 pos 指定的位置**之前**，插入其他容器（不仅限于vector）中位于 [first,last) 区域的所有元素，并返回表示第一个新插入元素位置的迭代器。
+  4、`iterator arr.insert(const_iterator pos,first,last)`在迭代器 pos 指定的位置**之前**，插入其他容器（不仅限于vector）中位于 [first,last) 区域的所有元素，并返回表示第一个新插入元素位置的迭代器。
 
-  5、`iterator arr.insert(iterator pos ,list)`在迭代器 pos 指定的位置**之前**，插入初始化列表（用大括号{}括起来的多个元素，中间有逗号隔开）中所有的元素，并返回表示第一个新插入元素位置的迭代器
+  5、`iterator arr.insert(const_iterator pos ,list)`在迭代器 pos 指定的位置**之前**，插入初始化列表（用大括号{}括起来的多个元素，中间有逗号隔开）中所有的元素，并返回表示第一个新插入元素位置的迭代器
 
   ```c++
   #include <iostream> 
@@ -252,26 +251,26 @@ vector相关函数：
   9、`arr.erase(const_iterator begin,const_iterator end);` 删除迭代器从begin到end之间的元素
 
   10、`arr.clear();` //删除容器中所有元素
-
-```c++
-#include<bits/stdc++.h>
-using namespace std;
-int main(){
-    vector<int> arr;
-    for(int i=0;i<10;i++){
-         arr.push_back(i);
-    }
-    arr.insert(arr.begin(),1);
-    arr.insert(arr.end(),10);
-    arr.insert(arr.begin(),2,-1);
-    vector<int>::iterator it = arr.begin();
-    for(;it!=arr.end();it++){
-        cout<<*it<<endl;
-    }
-    system("pause");
-    return 0;
-}
-```
+  
+  ```c++
+  #include<bits/stdc++.h>
+  using namespace std;
+  int main(){
+      vector<int> arr;
+      for(int i=0;i<10;i++){
+           arr.push_back(i);
+      }
+      arr.insert(arr.begin(),1);
+      arr.insert(arr.end(),10);
+      arr.insert(arr.begin(),2,-1);
+      vector<int>::iterator it = arr.begin();
+      for(;it!=arr.end();it++){
+          cout<<*it<<endl;
+      }
+      system("pause");
+      return 0;
+  }
+  ```
 
 - 赋值操作：1、`vector<int> V1,V2 V1=V2 `通过重载运算符赋值.。
 
@@ -322,45 +321,45 @@ int main(){
   3、`arr.size();` 返回容器的大小,即容器中元素的个数
 
   4、`arr.resize(int n);` 重新指定容器的长度为n，若容器变长，以0填充新位置,如果容器变短，则末尾超过超过元素被删除
-  5、`arr.resize(int n,int elem);`重新指定容器的长度为n，若容器变长，以elem填充新位置,如果容器变短，超过元素被删除。              
-
-```c++
-#include<bits/stdc++.h>
-using namespace std;
-void pprint(vector<int> arr){
-    vector<int>::iterator it=arr.begin();
-    for(;it!=arr.end();it++){
-         cout<<*it<<' ';
-    }
-    cout<<endl;
-}
-void ppprint(vector<int> arr){
-     for(int i=0;i<arr.size();i++){
-         cout<<arr[i]<<' ';
-     }
-     cout<<endl;
-}
-int main(){
-    vector<int> arr;
-    for(int i=0;i<10;i++){
-         arr.push_back(i);
-    }
-    cout<<arr.empty()<<endl;
-    cout<<arr.capacity()<<endl;
-    cout<<arr.size()<<endl;
-    arr.resize(20);
-    cout<<arr.capacity()<<endl;
-    cout<<arr.size()<<endl;
-    ppprint(arr);
-    arr.resize(25,-1);
-    ppprint(arr);
-    arr.resize(5);
-    ppprint(arr);
-
-    system("pause");
-    return 0;
-}
-```
+  5、`arr.resize(int n,int elem);`重新指定容器的长度为n，若容器变长，以elem填充新位置,如果容器变短，超过元素被删除。            
+  
+  ```c++
+  #include<bits/stdc++.h>
+  using namespace std;
+  void pprint(vector<int> arr){
+      vector<int>::iterator it=arr.begin();
+      for(;it!=arr.end();it++){
+           cout<<*it<<' ';
+      }
+      cout<<endl;
+  }
+  void ppprint(vector<int> arr){
+       for(int i=0;i<arr.size();i++){
+           cout<<arr[i]<<' ';
+       }
+       cout<<endl;
+  }
+  int main(){
+      vector<int> arr;
+      for(int i=0;i<10;i++){
+           arr.push_back(i);
+      }
+      cout<<arr.empty()<<endl;
+      cout<<arr.capacity()<<endl;
+      cout<<arr.size()<<endl;
+      arr.resize(20);
+      cout<<arr.capacity()<<endl;
+      cout<<arr.size()<<endl;
+      ppprint(arr);
+      arr.resize(25,-1);
+      ppprint(arr);
+      arr.resize(5);
+      ppprint(arr);
+  
+      system("pause");
+      return 0;
+  }
+  ```
 
 - vector数据的访问
 
@@ -452,9 +451,133 @@ int main(){
 
 ## 关联式容器
 
+### pair
+
+关联式容器存储的是“键值对”形式的数据，比如：
+
+<"C语言教程", "1">
+<"python教程", "2">
+<"java教程", "3">
+
+如上所示，每行都表示一个键值对，其中第一个元素作为键（key），第二个元素作为值（value）。
+
+> 注意，基于各个关联式容器存储数据的特点，只有各个键值对中的键和值全部对应相等时，才能使用 set 和 multiset 关联式容器存储，否则就要选用 map 或者 multimap 关联式容器。
+
+考虑到“键值对”并不是普通类型数据，C++ STL 标准库提供了 pair 类模板，其专门用来将 2 个普通元素 first 和 second（可以是 C++ 基本数据类型、结构体、类自定的类型）创建成一个新元素`<first, second>`。通过其构成的元素格式不难看出，使用 pair 类模板来创建“键值对”形式的元素，再合适不过。
+
+```c++
+#include <iostream>
+#include <utility>      // pair
+#include <string>       // string
+using namespace std;
+int main() {
+    // 调用构造函数 1，也就是默认构造函数 常用
+    pair <string, double> pair1;
+    pair1.first = "Java教程";
+    pair1.second = "http://c.biancheng.net/java/";
+    // 调用第 2 种构造函数
+    pair <string, string> pair2("STL教程","http://c.biancheng.net/stl/");  
+    // 调用拷贝构造函数
+    pair <string, string> pair3(pair2);
+    //调用移动构造函数
+    pair <string, string> pair4(make_pair("C++教程", "http://c.biancheng.net/cplus/"));
+    // 调用第 5 种构造函数
+    pair <string, string> pair5(string("Python教程"), string("http://c.biancheng.net/python/"));  
+    cout << "pair1: " << pair1.first << " " << pair1.second << endl;
+    cout << "pair2: "<< pair2.first << " " << pair2.second << endl;
+    cout << "pair3: " << pair3.first << " " << pair3.second << endl;
+    cout << "pair4: " << pair4.first << " " << pair4.second << endl;
+    cout << "pair5: " << pair5.first << " " << pair5.second << endl;
+    return 0;
+}
+```
+
 ### set
 
+C++ STL标准库中还提供有 set 和 multiset 这 2 个容器，它们也属于关联式容器。不过，本节先讲解 set 容器，后续章节再讲解 multiset 容器。和 map、multimap 容器不同，使用 set 容器存储的各个键值对，要求键 key 和值 value 必须相等。
+
+举个例子，如下有 2 组键值对数据：
+
+{<'a', 1>, <'b', 2>, <'c', 3>}
+{<'a', 'a'>, <'b', 'b'>, <'c', 'c'>}
+
+显然，第一组数据中各键值对的键和值不相等，而第二组中各键值对的键和值对应相等。对于 set 容器来说，只能存储第 2 组键值对，而无法存储第一组键值对。
+
+基于 set 容器的这种特性，当使用 set 容器存储键值对时，只需要为其提供各键值对中的 value 值（也就是 key 的值）即可。仍以存储上面第 2 组键值对为例，只需要为 set 容器提供 {'a','b','c'} ，该容器即可成功将它们存储起来。
+
+通过前面的学习我们知道，map、multimap 容器都会自行根据键的大小对存储的键值对进行排序，set 容器也会如此，只不过 set 容器中各键值对的键 key 和值 value 是相等的，根据 key 排序，也就等价为根据 value 排序。
+
+另外，使用 set 容器存储的各个元素的值必须各不相同。更重要的是，从语法上讲 set 容器并没有强制对存储元素的类型做 const 修饰，即 set 容器中存储的元素的值是可以修改的。但是，C++ 标准为了防止用户修改容器中元素的值，对所有可能会实现此操作的行为做了限制，使得在正常情况下，用户是无法做到修改 set 容器中元素的值的。
+
+> 对于初学者来说，切勿尝试直接修改 set 容器中已存储元素的值，这很有可能破坏 set 容器中元素的有序性，最正确的修改 set 容器中元素值的做法是：**先删除该元素，然后再添加一个修改后的元素。**
+
+<img src="STL(C++).assets/image-20221023150613809.png" alt="image-20221023150613809" style="zoom:80%;" />
+
+```c++
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+    set<int> A;
+    pair<set<int>::iterator,bool>res;
+    res = A.insert(1);
+    cout<<*(res.first)<<endl;
+    cout<<res.second<<endl;
+    cout<<*res.first<<endl;
+    cout<<A.size()<<endl;
+    cout<<A.empty()<<endl;
+    auto flag = A.insert(1);
+    cout<<flag.second<<endl;
+    A.erase(1);
+    cout<<A.empty()<<endl;
+    system("pause");
+    return 0;
+}
+```
+
+
+
 ### map
+
+作为关联式容器的一种，map 容器存储的都是 pair 对象，也就是用 pair 类模板创建的键值对。其中，各个键值对的键和值可以是任意数据类型，包括 C++]基本数据类型（int、double 等）、使用结构体或类自定义的类型。
+
+> 通常情况下，map 容器中存储的各个键值对都选用 string 字符串作为键的类型。
+
+与此同时，在使用 map 容器存储多个键值对时，该容器会自动根据各键值对的键的大小，按照既定的规则进行排序。默认情况下，map 容器选用`std::less<T>`排序规则（其中 T 表示键的数据类型），其会根据键的大小对所有键值对做升序排序。当然，根据实际情况的需要，我们可以手动指定 map 容器的排序规则，既可以选用 [STL](http://c.biancheng.net/stl/) 标准库中提供的其它排序规则（比如`std::greater<T>`），也可以自定义排序规则。
+
+另外需要注意的是，使用 map 容器存储的各个键值对，键的值既不能重复也不能被修改。换句话说，map 容器中存储的各个键值对不仅键的值独一无二，键的类型也会用 const 修饰，这意味着只要键值对被存储到 map 容器中，其键的值将不能再做任何修改。
+
+> 前面提到，map 容器存储的都是 pair 类型的键值对元素，更确切的说，该容器存储的都是 pair<const K, T> 类型（其中 K 和 T 分别表示键和值的数据类型）的键值对元素。
+
+<img src="STL(C++).assets/image-20221023142035827.png" alt="image-20221023142035827" style="zoom:80%;" />
+
+```c++
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+    map<int ,int> M;
+    int a=1,b=2;
+    pair<int ,int> p(a,b);
+    make_pair(1,2);
+    auto res = M.insert(p);
+    cout<<res.first<<endl;
+    cout<<(*res.first).first<<endl;
+    auto rer = M.insert(make_pair(1,3));// insert返回的是一个pair对,first是map中存在的键值对，second是返回是否插入                                                                                                        bool数值
+    cout<<rer.second<<endl;
+    for(auto it=M.begin();it!=M.end();it++){
+          cout<<(*it).first<<' ';
+          cout<<(*it).second<<endl;
+    }
+    auto A= M.find(2);
+    if(A==M.end()){
+         cout<<0<<endl;
+    }
+    M.earse(1);
+    system("pause");
+    return 0;
+}
+```
 
 ## 容器适配器
 
